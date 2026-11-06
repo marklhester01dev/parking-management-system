@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* Every template or JS file that carries utility classes must be listed here. */
+@source "../../templates";
+
+@theme {
+  /* Breakpoints (match the responsive checks in docs/general-rules.md) */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1400px;
+
+  /* Colours */
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
+  --color-line: #e2e8f0;
+  --color-ink-900: #0f172a;
+  --color-ink-600: #475569;
+  --color-brand-50: #eff6ff;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-focus: #93c5fd;
+  --color-success: #15803d;
+  --color-success-soft: #dcfce7;
+  --color-warning: #b45309;
+  --color-warning-soft: #fef3c7;
+  --color-danger: #b91c1c;
+  --color-danger-soft: #fee2e2;
+  --color-info: #1d4ed8;
+  --color-info-soft: #dbeafe;
+
+  /* Radii (4px grid) */
+  --radius-card: 16px;
+  --radius-panel: 12px;
+  --radius-field: 8px;
+
+  /* Fluid type: MIN -> MAX between 320px and 1200px viewport width */
+  --text-fluid-base: clamp(14px, calc(14px + 2 * (100vw - 320px) / 880), 16px);
+  --text-fluid-lg: clamp(16px, calc(16px + 4 * (100vw - 320px) / 880), 20px);
+  --text-fluid-xl: clamp(
+    19.2px,
+    calc(19.2px + 4.8 * (100vw - 320px) / 880),
+    24px
+  );
+  --text-fluid-title: clamp(
+    22.4px,
+    calc(22.4px + 5.6 * (100vw - 320px) / 880),
+    28px
+  );
+  --text-fluid-display: clamp(
+    25.6px,
+    calc(25.6px + 6.4 * (100vw - 320px) / 880),
+    32px
+  );
+  --text-fluid-stat: clamp(32px, calc(32px + 8 * (100vw - 320px) / 880), 40px);
+}
+
+/* Page margin: 16px phones, 24px from 576px, 32px from 992px, 48px from 1400px */
+:root {
+  --page-pad: 1rem;
+}
+@media (min-width: 576px) {
+  :root {
+    --page-pad: 1.5rem;
+  }
+}
+@media (min-width: 992px) {
+  :root {
+    --page-pad: 2rem;
+  }
+}
+@media (min-width: 1400px) {
+  :root {
+    --page-pad: 3rem;
+  }
+}
+
+@utility page {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: var(--page-pad);
+}
+
+@utility card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  padding: --spacing(6);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.05);
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: --spacing(3);
+  padding-inline: --spacing(6);
+  border-radius: var(--radius-field);
+  background-color: var(--color-brand-600);
+  color: #fff;
+  font-size: var(--text-fluid-base);
+  font-weight: 600;
+  cursor: pointer;
+  &:not(:disabled):hover {
+    background-color: var(--color-brand-700);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: --spacing(2);
+  padding-inline: --spacing(4);
+  border-radius: var(--radius-field);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  color: var(--color-ink-900);
+  font-size: var(--text-fluid-base);
+  font-weight: 500;
+  cursor: pointer;
+  &:not(:disabled):hover {
+    background-color: var(--color-canvas);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
