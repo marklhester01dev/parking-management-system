@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% set status_list = ['available', 'occupied', 'maintenance', 'active', 'completed'] %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">Dashboard</h1>
+<section class="card grid gap-4">
+  <h2 class="text-fluid-lg font-semibold">Foundation ready</h2>
+  <p class="text-ink-600">The app, database and styles are running. Features arrive phase by phase.</p>
+  <ul class="flex flex-wrap gap-2">
+    {% for s in status_list %}<li>{{ ui.status_badge(s) }}</li>{% endfor %}
+  </ul>
+</section>
+{% endblock %}
