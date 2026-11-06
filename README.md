@@ -5,14 +5,6 @@
 IT E04 – Integrative Programming and Technologies 2 · Group 8 · 3rd Year BSIT
 Stack: Python · Flask · Jinja/HTML · Tailwind CSS v4 · SQL · SQLite
 
-## Docs
-
-| File                    | Purpose                                                           |
-| ----------------------- | ----------------------------------------------------------------- |
-| `docs/phases.md`        | Build plan by phase: scope, tasks, done-when, rubric mapping      |
-| `docs/general-rules.md` | Rules for every change (backend + frontend)                       |
-| `docs/changelog.md`     | Log of every change, with backend impact (schema, routes, fields) |
-
 ## Planned layout
 
 ```
@@ -43,7 +35,3 @@ Styles (only when editing templates/CSS; needs the Tailwind v4 standalone CLI):
 ```
 tailwindcss -i static/src/tailwind.css -o static/css/app.css --watch
 ```
-
-## Zips
-
-One zip per finished phase: `parking-system-phaseN.zip`. Zip content = whole project folder, docs updated.
