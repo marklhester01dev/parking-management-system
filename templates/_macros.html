@@ -1,0 +1,32 @@
+{# Shared markup. Add data_table / confirm_button when first needed. #}
+
+{% macro flash_messages() %}
+{% set item_class = "rounded-panel px-4 py-3 text-fluid-base data-[tone=success]:bg-success-soft data-[tone=success]:text-success data-[tone=warning]:bg-warning-soft data-[tone=warning]:text-warning data-[tone=danger]:bg-danger-soft data-[tone=danger]:text-danger data-[tone=info]:bg-info-soft data-[tone=info]:text-info" %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="grid gap-3 mb-6">
+    {% for category, message in messages %}
+    <p class="{{ item_class }}" data-tone="{{ category }}" role="{{ 'alert' if category == 'danger' else 'status' }}">{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+{% endmacro %}
+
+{# status: available | occupied | maintenance | active | completed #}
+{% macro status_badge(status) %}
+{% set badge_class = "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium data-[status=available]:bg-success-soft data-[status=available]:text-success data-[status=occupied]:bg-danger-soft data-[status=occupied]:text-danger data-[status=maintenance]:bg-warning-soft data-[status=maintenance]:text-warning data-[status=active]:bg-info-soft data-[status=active]:text-info data-[status=completed]:bg-line data-[status=completed]:text-ink-600" %}
+<span class="{{ badge_class }}" data-status="{{ status }}">{{ status|capitalize }}</span>
+{% endmacro %}
+
+{% macro form_field(name, label, value="", type="text", error=None, required=True) %}
+{% set input_class = "w-full rounded-field border border-line bg-surface px-3 py-2 text-fluid-base focus:outline-2 focus:outline-offset-0 focus:outline-brand-focus [&.is-invalid]:border-danger [&.is-invalid]:focus:outline-danger-soft" %}
+<div class="grid gap-1">
+  <label for="{{ name }}" class="text-fluid-base font-medium">{{ label }}</label>
+  <input id="{{ name }}" name="{{ name }}" type="{{ type }}" value="{{ value }}"
+         class="{{ input_class }}{{ ' is-invalid' if error }}"
+         {% if required %}required{% endif %}
+         {% if error %}aria-invalid="true" aria-describedby="{{ name }}-error"{% endif %}>
+  {% if error %}<p id="{{ name }}-error" class="text-sm text-danger">{{ error }}</p>{% endif %}
+</div>
+{% endmacro %}
