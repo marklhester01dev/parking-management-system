@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+instance/        # parking.db lives here; schema.sql is the source of truth
+*.db
+.env
+.qodo/
+.idea/
+.DS_Store
+tailwindcss*     # standalone CLI binary (~100 MB), each person downloads their own
