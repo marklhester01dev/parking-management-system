@@ -44,6 +44,8 @@ def validate(db, form, vehicle_id=None):
         errors["owner_name"] = "Owner name is required."
     elif len(owner) > OWNER_MAX:
         errors["owner_name"] = f"Owner name must be {OWNER_MAX} characters or fewer."
+    elif not owner.isprintable():
+        errors["owner_name"] = "Owner name contains characters that are not allowed."
 
     if values["vehicle_type"] not in VEHICLE_TYPES:
         errors["vehicle_type"] = "Choose a vehicle type from the list."
