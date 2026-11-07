@@ -13,13 +13,13 @@ config.py         secret key, hourly rate, vehicle types, slot statuses
 db.py             connection, init-db command
 schema.sql        tables, constraints, indexes
 requirements.txt
-routes/           blueprints: vehicles, slots (later: transactions, dashboard)
-services/         business logic and SQL (vehicles, slots; later entry, exit, fee)
+routes/           blueprints: parking, vehicles, slots (later: dashboard, history)
+services/         business logic and SQL: fees, parking (entry/exit), vehicles, slots
 templates/        Jinja pages, _macros.html
 static/src/       tailwind.css (@theme tokens, @source, @utility)
-static/css/       app.css (built output, committed)
+static/css/       app.css (built output, gitignored: build it before running)
 static/js/        app.js (delete confirmation)
-docs/
+docs/             phases, general rules, changelog, git workflow
 ```
 
 ## Run (available from Phase 1)
@@ -31,7 +31,7 @@ flask --app app init-db        # add --reset to drop all data first
 flask --app app run --debug
 ```
 
-Styles (only when editing templates/CSS; needs the Tailwind v4 standalone CLI):
+Styles (build once before the first run, and again after pulling or editing templates/CSS; needs the Tailwind v4 standalone CLI; `app.css` is not in Git):
 
 ```
 tailwindcss -i static/src/tailwind.css -o static/css/app.css --watch
