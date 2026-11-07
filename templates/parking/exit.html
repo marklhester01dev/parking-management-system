@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% set row_class = "flex flex-wrap items-baseline justify-between gap-2" %}
+{% block title %}Vehicle exit{% endblock %}
+{% block content %}
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">Vehicle exit</h1>
+
+<section class="card grid gap-6 max-w-xl" aria-labelledby="summary-heading">
+  <h2 id="summary-heading" class="text-fluid-lg font-semibold">{{ parking.plate_number }} · Slot {{ parking.slot_number }}</h2>
+  <dl class="grid gap-3">
+    <div class="{{ row_class }}"><dt class="text-ink-600">Owner</dt><dd class="font-medium">{{ parking.owner_name }}</dd></div>
+    <div class="{{ row_class }}"><dt class="text-ink-600">Entered</dt><dd class="font-medium">{{ parking.entry_time }}</dd></div>
+    <div class="{{ row_class }}"><dt class="text-ink-600">Exit time (now)</dt><dd class="font-medium">{{ now }}</dd></div>
+    <div class="{{ row_class }}"><dt class="text-ink-600">Parked</dt><dd class="font-medium">{{ parking.seconds|duration }}</dd></div>
+    <div class="{{ row_class }}"><dt class="text-ink-600">Hours charged</dt><dd class="font-medium">{{ parking.hours }}</dd></div>
+    <div class="{{ row_class }}"><dt class="text-fluid-lg font-semibold">Total fee</dt><dd class="text-fluid-xl font-semibold">{{ parking.fee|peso }}</dd></div>
+  </dl>
+  <p class="text-sm text-ink-600">Rate: {{ rate_text }} The fee is calculated again at the moment you confirm.</p>
+  <form method="post" action="{{ url_for('parking.exit_vehicle', transaction_id=parking.transaction_id) }}" class="flex flex-wrap gap-3">
+    <button type="submit" class="btn-primary">Confirm exit</button>
+    <a href="{{ url_for('parking.index') }}" class="btn-secondary">Cancel</a>
+  </form>
+</section>
+{% endblock %}

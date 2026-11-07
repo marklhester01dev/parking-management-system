@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% set cell_class = "px-4 py-3" %}
+{% set plate_class = "px-4 py-3 font-medium whitespace-nowrap" %}
+{% set nowrap_class = "px-4 py-3 whitespace-nowrap" %}
+{% set link_class = "font-medium text-brand-700 hover:underline" %}
+{% block title %}Parking{% endblock %}
+{% block content %}
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">Parking</h1>
+
+<div class="grid gap-8 lg:gap-12">
+  <section class="card grid gap-4" aria-labelledby="entry-heading">
+    <h2 id="entry-heading" class="text-fluid-lg font-semibold">Vehicle entry</h2>
+    {% if not vehicle_options or not slot_options %}
+    <p class="text-ink-600">
+      {% if not vehicle_options %}No vehicle is free to park. <a href="{{ url_for('vehicles.create_vehicle') }}" class="{{ link_class }}">Register a vehicle</a>, or wait for one to exit.{% endif %}
+      {% if not slot_options %}No slot is available. <a href="{{ url_for('slots.list_slots') }}" class="{{ link_class }}">Manage slots</a>, or wait for one to be released.{% endif %}
+    </p>
+    {% else %}
+    <form method="post" action="{{ url_for('parking.enter') }}" class="grid gap-4" novalidate>
+      <div class="grid items-start gap-4 md:grid-cols-2">
+        {{ ui.select_field('vehicle_id', 'Vehicle', vehicle_options, values.vehicle_id, error=errors.vehicle_id, placeholder='Choose a vehicle') }}
+        {{ ui.select_field('slot_id', 'Available slot', slot_options, values.slot_id, error=errors.slot_id, placeholder='Choose a slot') }}
+      </div>
+      <p class="text-sm text-ink-600">Entry time is recorded automatically. Rate: {{ rate_text }}</p>
+      <div>
+        <button type="submit" class="btn-primary">Record entry</button>
+      </div>
+    </form>
+    {% endif %}
+  </section>
+
+  <section class="grid gap-4" aria-labelledby="active-heading">
+    <h2 id="active-heading" class="text-fluid-lg font-semibold">Currently parked</h2>
+    {% if active %}
+    {% call ui.data_table(['Plate number', 'Owner', 'Slot', 'Entered', 'Parked so far', 'Fee if leaving now', 'Actions']) %}
+      {% for p in active %}
+      <tr>
+        <td class="{{ plate_class }}">{{ p.plate_number }}</td>
+        <td class="{{ cell_class }}">{{ p.owner_name }}</td>
+        <td class="{{ nowrap_class }}">{{ p.slot_number }}</td>
+        <td class="{{ nowrap_class }}">{{ p.entry_time[:16] }}</td>
+        <td class="{{ nowrap_class }}">{{ p.seconds|duration }}</td>
+        <td class="{{ nowrap_class }}">{{ p.fee|peso }} <span class="text-sm text-ink-600">({{ p.hours }} {{ 'hour' if p.hours == 1 else 'hours' }})</span></td>
+        <td class="{{ cell_class }}">
+          <a href="{{ url_for('parking.exit_vehicle', transaction_id=p.transaction_id) }}" class="btn-secondary">Exit<span class="sr-only"> {{ p.plate_number }}</span></a>
+        </td>
+      </tr>
+      {% endfor %}
+    {% endcall %}
+    {% else %}
+    <p class="card text-ink-600">No vehicle is parked right now.</p>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}
