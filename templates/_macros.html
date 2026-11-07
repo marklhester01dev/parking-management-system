@@ -1,4 +1,4 @@
-{# Shared markup. Add data_table / confirm_button when first needed. #}
+{# Shared markup. Add confirm_button when first needed. #}
 
 {% macro flash_messages() %}
 {% set item_class = "rounded-panel px-4 py-3 text-fluid-base data-[tone=success]:bg-success-soft data-[tone=success]:text-success data-[tone=warning]:bg-warning-soft data-[tone=warning]:text-warning data-[tone=danger]:bg-danger-soft data-[tone=danger]:text-danger data-[tone=info]:bg-info-soft data-[tone=info]:text-info" %}
@@ -65,4 +65,30 @@
     <tbody class="divide-y divide-line">{{ caller() }}</tbody>
   </table>
 </div>
+{% endmacro %}
+
+{# Active parkings with time so far and fee if leaving now. `active`: rows from services.parking.list_active #}
+{% macro active_table(active) %}
+{% set cell_class = "px-4 py-3" %}
+{% set plate_class = "px-4 py-3 font-medium whitespace-nowrap" %}
+{% set nowrap_class = "px-4 py-3 whitespace-nowrap" %}
+{% if active %}
+{% call data_table(['Plate number', 'Owner', 'Slot', 'Entered', 'Parked so far', 'Fee if leaving now', 'Actions']) %}
+  {% for p in active %}
+  <tr>
+    <td class="{{ plate_class }}">{{ p.plate_number }}</td>
+    <td class="{{ cell_class }}">{{ p.owner_name }}</td>
+    <td class="{{ nowrap_class }}">{{ p.slot_number }}</td>
+    <td class="{{ nowrap_class }}">{{ p.entry_time[:16] }}</td>
+    <td class="{{ nowrap_class }}">{{ p.seconds|duration }}</td>
+    <td class="{{ nowrap_class }}">{{ p.fee|peso }} <span class="text-sm text-ink-600">({{ p.hours }} {{ 'hour' if p.hours == 1 else 'hours' }})</span></td>
+    <td class="{{ cell_class }}">
+      <a href="{{ url_for('parking.exit_vehicle', transaction_id=p.transaction_id) }}" class="btn-secondary">Exit<span class="sr-only"> {{ p.plate_number }}</span></a>
+    </td>
+  </tr>
+  {% endfor %}
+{% endcall %}
+{% else %}
+<p class="card text-ink-600">No vehicle is parked right now.</p>
+{% endif %}
 {% endmacro %}

@@ -1,7 +1,4 @@
 {% extends "base.html" %}
-{% set cell_class = "px-4 py-3" %}
-{% set plate_class = "px-4 py-3 font-medium whitespace-nowrap" %}
-{% set nowrap_class = "px-4 py-3 whitespace-nowrap" %}
 {% set link_class = "font-medium text-brand-700 hover:underline" %}
 {% block title %}Parking{% endblock %}
 {% block content %}
@@ -31,25 +28,7 @@
 
   <section class="grid gap-4" aria-labelledby="active-heading">
     <h2 id="active-heading" class="text-fluid-lg font-semibold">Currently parked</h2>
-    {% if active %}
-    {% call ui.data_table(['Plate number', 'Owner', 'Slot', 'Entered', 'Parked so far', 'Fee if leaving now', 'Actions']) %}
-      {% for p in active %}
-      <tr>
-        <td class="{{ plate_class }}">{{ p.plate_number }}</td>
-        <td class="{{ cell_class }}">{{ p.owner_name }}</td>
-        <td class="{{ nowrap_class }}">{{ p.slot_number }}</td>
-        <td class="{{ nowrap_class }}">{{ p.entry_time[:16] }}</td>
-        <td class="{{ nowrap_class }}">{{ p.seconds|duration }}</td>
-        <td class="{{ nowrap_class }}">{{ p.fee|peso }} <span class="text-sm text-ink-600">({{ p.hours }} {{ 'hour' if p.hours == 1 else 'hours' }})</span></td>
-        <td class="{{ cell_class }}">
-          <a href="{{ url_for('parking.exit_vehicle', transaction_id=p.transaction_id) }}" class="btn-secondary">Exit<span class="sr-only"> {{ p.plate_number }}</span></a>
-        </td>
-      </tr>
-      {% endfor %}
-    {% endcall %}
-    {% else %}
-    <p class="card text-ink-600">No vehicle is parked right now.</p>
-    {% endif %}
+    {{ ui.active_table(active) }}
   </section>
 </div>
 {% endblock %}
