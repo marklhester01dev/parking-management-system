@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
 
 import click
@@ -20,6 +21,19 @@ def close_db(_exc=None):
     conn = g.pop("db", None)
     if conn is not None:
         conn.close()
+
+
+@contextmanager
+def write_transaction(conn):
+    """One atomic write: BEGIN IMMEDIATE takes the write lock before any check runs, so two
+    requests cannot both pass the same check. Commits at the end, rolls back on any error."""
+    conn.execute("BEGIN IMMEDIATE")
+    try:
+        yield conn
+        conn.commit()
+    except BaseException:
+        conn.rollback()
+        raise
 
 
 def init_db(reset=False):
