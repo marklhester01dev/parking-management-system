@@ -1,13 +1,24 @@
 {% extends "base.html" %}
-{% set status_list = ['available', 'occupied', 'maintenance', 'active', 'completed'] %}
+{% set label_class = "text-ink-600" %}
+{% set stat_class = "text-fluid-stat font-semibold" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
 <h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">Dashboard</h1>
-<section class="card grid gap-4">
-  <h2 class="text-fluid-lg font-semibold">Foundation ready</h2>
-  <p class="text-ink-600">The app, database and styles are running. Features arrive phase by phase.</p>
-  <ul class="flex flex-wrap gap-2">
-    {% for s in status_list %}<li>{{ ui.status_badge(s) }}</li>{% endfor %}
-  </ul>
-</section>
+
+<div class="grid gap-8 lg:gap-12">
+  <section class="grid gap-4" aria-labelledby="slots-heading">
+    <h2 id="slots-heading" class="text-fluid-lg font-semibold">Slots</h2>
+    <dl class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="card grid gap-1"><dt class="{{ label_class }}">Total slots</dt><dd class="{{ stat_class }}">{{ counts.total }}</dd></div>
+      <div class="card grid gap-1"><dt class="{{ label_class }}">Available</dt><dd class="{{ stat_class }} text-success">{{ counts.available }}</dd></div>
+      <div class="card grid gap-1"><dt class="{{ label_class }}">Occupied</dt><dd class="{{ stat_class }} text-danger">{{ counts.occupied }}</dd></div>
+      <div class="card grid gap-1"><dt class="{{ label_class }}">In maintenance</dt><dd class="{{ stat_class }} text-maintenance">{{ counts.maintenance }}</dd></div>
+    </dl>
+  </section>
+
+  <section class="grid gap-4" aria-labelledby="active-heading">
+    <h2 id="active-heading" class="text-fluid-lg font-semibold">Currently parked</h2>
+    {{ ui.active_table(active) }}
+  </section>
+</div>
 {% endblock %}
