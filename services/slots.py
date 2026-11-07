@@ -132,3 +132,16 @@ def delete(db, slot_id):
         return None
     except sqlite3.IntegrityError:
         return "This slot has parking records and cannot be deleted."
+
+
+def counts(db):
+    """Slot totals for the dashboard. total = available + occupied + maintenance."""
+    return db.execute(
+        """
+        SELECT COUNT(*)                                              AS total,
+               COALESCE(SUM(slot_status = 'available'), 0)           AS available,
+               COALESCE(SUM(slot_status = 'occupied'), 0)            AS occupied,
+               COALESCE(SUM(slot_status = 'maintenance'), 0)         AS maintenance
+          FROM parking_slots
+        """
+    ).fetchone()
