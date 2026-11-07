@@ -13,11 +13,12 @@ config.py         secret key, hourly rate, vehicle types, slot statuses
 db.py             connection, init-db command
 schema.sql        tables, constraints, indexes
 requirements.txt
-services/         business logic (entry, exit, fee)
+routes/           blueprints: vehicles, slots (later: transactions, dashboard)
+services/         business logic and SQL (vehicles, slots; later entry, exit, fee)
 templates/        Jinja pages, _macros.html
 static/src/       tailwind.css (@theme tokens, @source, @utility)
 static/css/       app.css (built output, committed)
-static/js/        optional client-side helpers
+static/js/        app.js (delete confirmation)
 docs/
 ```
 

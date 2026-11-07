@@ -1,5 +1,5 @@
 {% import '_macros.html' as ui %}
-{% set nav_items = [('index', 'Dashboard')] %}
+{% set nav_items = [('index', 'Dashboard'), ('vehicles.list_vehicles', 'Vehicles'), ('slots.list_slots', 'Slots')] %}
 {% set nav_class = "rounded-field px-3 py-2 text-fluid-base font-medium text-ink-600 hover:text-ink-900 aria-[current=page]:bg-brand-50 aria-[current=page]:text-brand-700 [&:not([aria-current=page])]:hover:bg-canvas" %}
 <!doctype html>
 <html lang="en">
@@ -16,7 +16,7 @@
       <nav aria-label="Main">
         <ul class="flex flex-wrap gap-2">
           {% for endpoint, label in nav_items %}
-          <li><a href="{{ url_for(endpoint) }}" class="{{ nav_class }}"{% if request.endpoint == endpoint %} aria-current="page"{% endif %}>{{ label }}</a></li>
+          <li><a href="{{ url_for(endpoint) }}" class="{{ nav_class }}"{% if request.endpoint == endpoint or (request.blueprint and endpoint.startswith(request.blueprint ~ '.')) %} aria-current="page"{% endif %}>{{ label }}</a></li>
           {% endfor %}
         </ul>
       </nav>
@@ -31,5 +31,6 @@
   <footer class="border-t border-line">
     <div class="page py-4 text-sm text-ink-600">IT E04 · Group 8 · Vehicle Parking Management System</div>
   </footer>
+  <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </body>
 </html>

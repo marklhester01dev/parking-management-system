@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% set heading = "Edit slot" if slot else "Add slot" %}
+{% block title %}{{ heading }}{% endblock %}
+{% block content %}
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">{{ heading }}</h1>
+
+<form method="post" class="card grid gap-4 max-w-xl" novalidate>
+  {{ ui.form_field('slot_number', 'Slot number', values.slot_number, error=errors.slot_number, maxlength=10, hint='Letters, numbers and hyphens, for example A-01.') }}
+  {{ ui.select_field('slot_status', 'Status', status_options, values.slot_status, error=errors.slot_status, disabled=locked, hint='An occupied slot is released when its vehicle exits.' if locked else None) }}
+  <div class="flex flex-wrap gap-3 pt-2">
+    <button type="submit" class="btn-primary">{{ 'Save changes' if slot else 'Add slot' }}</button>
+    <a href="{{ url_for('slots.list_slots') }}" class="btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

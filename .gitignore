@@ -8,3 +8,4 @@ instance/        # parking.db lives here; schema.sql is the source of truth
 .idea/
 .DS_Store
 tailwindcss*     # standalone CLI binary (~100 MB), each person downloads their own
+static/css/app.css

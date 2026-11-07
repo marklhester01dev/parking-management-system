@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% set cell_class = "px-4 py-3" %}
+{% set plate_class = "px-4 py-3 font-medium whitespace-nowrap" %}
+{% set link_class = "font-medium text-brand-700 hover:underline" %}
+{% block title %}Vehicles{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6 lg:mb-8">
+  <h1 class="text-fluid-title font-semibold">Vehicles</h1>
+  <a href="{{ url_for('vehicles.create_vehicle') }}" class="btn-primary">Register vehicle</a>
+</div>
+
+{% if vehicles %}
+{% call ui.data_table(['Plate number', 'Owner', 'Type', 'Parking', 'Actions']) %}
+  {% for v in vehicles %}
+  <tr>
+    <td class="{{ plate_class }}">{{ v.plate_number }}</td>
+    <td class="{{ cell_class }}">{{ v.owner_name }}</td>
+    <td class="{{ cell_class }}">{{ v.vehicle_type|capitalize }}</td>
+    <td class="{{ cell_class }}">
+      {% if v.parked_slot %}{{ ui.status_badge('active') }} <span class="text-ink-600">Slot {{ v.parked_slot }}</span>{% else %}<span class="text-ink-600">Not parked</span>{% endif %}
+    </td>
+    <td class="{{ cell_class }}">
+      <div class="flex flex-wrap gap-2">
+        <a href="{{ url_for('vehicles.edit_vehicle', vehicle_id=v.vehicle_id) }}" class="btn-secondary">Edit<span class="sr-only"> {{ v.plate_number }}</span></a>
+        <form method="post" action="{{ url_for('vehicles.delete_vehicle', vehicle_id=v.vehicle_id) }}" data-confirm="Delete vehicle {{ v.plate_number }}? This cannot be undone.">
+          <button type="submit" class="btn-danger"{% if v.history_count %} disabled title="Has parking records"{% endif %}>Delete<span class="sr-only"> {{ v.plate_number }}</span></button>
+        </form>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+{% endcall %}
+{% else %}
+<p class="card text-ink-600">No vehicles registered yet. <a href="{{ url_for('vehicles.create_vehicle') }}" class="{{ link_class }}">Register the first vehicle</a>.</p>
+{% endif %}
+{% endblock %}

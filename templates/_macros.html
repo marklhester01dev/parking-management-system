@@ -19,14 +19,50 @@
 <span class="{{ badge_class }}" data-status="{{ status }}">{{ status|capitalize }}</span>
 {% endmacro %}
 
-{% macro form_field(name, label, value="", type="text", error=None, required=True) %}
+{% macro form_field(name, label, value="", type="text", error=None, required=True, maxlength=None, hint=None) %}
 {% set input_class = "w-full rounded-field border border-line bg-surface px-3 py-2 text-fluid-base focus:outline-2 focus:outline-offset-0 focus:outline-brand-focus [&.is-invalid]:border-danger [&.is-invalid]:focus:outline-danger-soft" %}
 <div class="grid gap-1">
   <label for="{{ name }}" class="text-fluid-base font-medium">{{ label }}</label>
   <input id="{{ name }}" name="{{ name }}" type="{{ type }}" value="{{ value }}"
          class="{{ input_class }}{{ ' is-invalid' if error }}"
          {% if required %}required{% endif %}
-         {% if error %}aria-invalid="true" aria-describedby="{{ name }}-error"{% endif %}>
+         {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+         {% if error %}aria-invalid="true" aria-describedby="{{ name }}-error"{% elif hint %}aria-describedby="{{ name }}-hint"{% endif %}>
   {% if error %}<p id="{{ name }}-error" class="text-sm text-danger">{{ error }}</p>{% endif %}
+  {% if hint and not error %}<p id="{{ name }}-hint" class="text-sm text-ink-600">{{ hint }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{# options: list of (value, label). A disabled select is not submitted; the server ignores it. #}
+{% macro select_field(name, label, options, value="", error=None, required=True, disabled=False, placeholder=None, hint=None) %}
+{% set select_class = "w-full rounded-field border border-line bg-surface px-3 py-2 text-fluid-base focus:outline-2 focus:outline-offset-0 focus:outline-brand-focus disabled:opacity-50 [&.is-invalid]:border-danger [&.is-invalid]:focus:outline-danger-soft" %}
+<div class="grid gap-1">
+  <label for="{{ name }}" class="text-fluid-base font-medium">{{ label }}</label>
+  <select id="{{ name }}" name="{{ name }}"
+          class="{{ select_class }}{{ ' is-invalid' if error }}"
+          {% if required and not disabled %}required{% endif %}
+          {% if disabled %}disabled{% endif %}
+          {% if error %}aria-invalid="true" aria-describedby="{{ name }}-error"{% elif hint %}aria-describedby="{{ name }}-hint"{% endif %}>
+    {% if placeholder %}<option value=""{{ ' selected' if not value }}>{{ placeholder }}</option>{% endif %}
+    {% for opt_value, opt_label in options %}
+    <option value="{{ opt_value }}"{{ ' selected' if opt_value == value }}>{{ opt_label }}</option>
+    {% endfor %}
+  </select>
+  {% if error %}<p id="{{ name }}-error" class="text-sm text-danger">{{ error }}</p>{% endif %}
+  {% if hint and not error %}<p id="{{ name }}-hint" class="text-sm text-ink-600">{{ hint }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{# Scrolls inside its own wrapper, never the page. Use: {% call ui.data_table(['A', 'B']) %}<tr>...</tr>{% endcall %} #}
+{% macro data_table(headers) %}
+{% set wrap_class = "relative overflow-x-auto rounded-card border border-line bg-surface" %}
+{% set th_class = "px-4 py-3 text-left text-sm font-medium text-ink-600 whitespace-nowrap" %}
+<div class="{{ wrap_class }}">
+  <table class="w-full text-fluid-base">
+    <thead class="border-b border-line bg-canvas">
+      <tr>{% for h in headers %}<th scope="col" class="{{ th_class }}">{{ h }}</th>{% endfor %}</tr>
+    </thead>
+    <tbody class="divide-y divide-line">{{ caller() }}</tbody>
+  </table>
 </div>
 {% endmacro %}

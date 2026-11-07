@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% set cell_class = "px-4 py-3" %}
+{% set number_class = "px-4 py-3 font-medium whitespace-nowrap" %}
+{% set link_class = "font-medium text-brand-700 hover:underline" %}
+{% block title %}Parking slots{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6 lg:mb-8">
+  <h1 class="text-fluid-title font-semibold">Parking slots</h1>
+  <a href="{{ url_for('slots.create_slot') }}" class="btn-primary">Add slot</a>
+</div>
+
+{% if slots %}
+{% call ui.data_table(['Slot number', 'Status', 'Parked vehicle', 'Actions']) %}
+  {% for s in slots %}
+  <tr>
+    <td class="{{ number_class }}">{{ s.slot_number }}</td>
+    <td class="{{ cell_class }}">{{ ui.status_badge(s.slot_status) }}</td>
+    <td class="{{ cell_class }}">{% if s.parked_plate %}{{ s.parked_plate }}{% else %}<span class="text-ink-600">None</span>{% endif %}</td>
+    <td class="{{ cell_class }}">
+      <div class="flex flex-wrap gap-2">
+        <a href="{{ url_for('slots.edit_slot', slot_id=s.slot_id) }}" class="btn-secondary">Edit<span class="sr-only"> {{ s.slot_number }}</span></a>
+        <form method="post" action="{{ url_for('slots.delete_slot', slot_id=s.slot_id) }}" data-confirm="Delete slot {{ s.slot_number }}? This cannot be undone.">
+          <button type="submit" class="btn-danger"{% if s.slot_status == 'occupied' %} disabled title="Slot is occupied"{% elif s.history_count %} disabled title="Has parking records"{% endif %}>Delete<span class="sr-only"> {{ s.slot_number }}</span></button>
+        </form>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+{% endcall %}
+{% else %}
+<p class="card text-ink-600">No parking slots yet. <a href="{{ url_for('slots.create_slot') }}" class="{{ link_class }}">Add the first slot</a>.</p>
+{% endif %}
+{% endblock %}

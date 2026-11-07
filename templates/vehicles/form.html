@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% set heading = "Edit vehicle" if vehicle else "Register vehicle" %}
+{% block title %}{{ heading }}{% endblock %}
+{% block content %}
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">{{ heading }}</h1>
+
+<form method="post" class="card grid gap-4 max-w-xl" novalidate>
+  {{ ui.form_field('plate_number', 'Plate number', values.plate_number, error=errors.plate_number, maxlength=12, hint='Saved in capitals, for example ABC 1234.') }}
+  {{ ui.form_field('owner_name', 'Owner name', values.owner_name, error=errors.owner_name, maxlength=100) }}
+  {{ ui.select_field('vehicle_type', 'Vehicle type', type_options, values.vehicle_type, error=errors.vehicle_type, placeholder='Choose a type') }}
+  <div class="flex flex-wrap gap-3 pt-2">
+    <button type="submit" class="btn-primary">{{ 'Save changes' if vehicle else 'Register vehicle' }}</button>
+    <a href="{{ url_for('vehicles.list_vehicles') }}" class="btn-secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}
