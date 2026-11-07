@@ -14,7 +14,7 @@ def clean_slot_number(raw):
     return "".join((raw or "").split()).upper()
 
 
-def _natural_key(row):
+def natural_key(row):
     """A2 before A10."""
     return [int(p) if p.isdigit() else p for p in re.split(r"(\d+)", row["slot_number"])]
 
@@ -71,7 +71,7 @@ def list_all(db):
           LEFT JOIN vehicles v ON v.vehicle_id = t.vehicle_id
         """
     ).fetchall()
-    return sorted(rows, key=_natural_key)
+    return sorted(rows, key=natural_key)
 
 
 def get(db, slot_id):
