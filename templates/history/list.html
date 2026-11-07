@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% set cell_class = "px-4 py-3" %}
+{% set plate_class = "px-4 py-3 font-medium whitespace-nowrap" %}
+{% set nowrap_class = "px-4 py-3 whitespace-nowrap" %}
+{% set link_class = "font-medium text-brand-700 hover:underline" %}
+{% block title %}History{% endblock %}
+{% block content %}
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">History</h1>
+
+<div class="grid gap-6">
+  <form method="get" action="{{ url_for('history.list_history') }}" class="card grid gap-4 max-w-xl" role="search" novalidate>
+    {{ ui.form_field('q', 'Search by plate number', q, type='search', error=error, required=False, maxlength=12, hint='Part of a plate is enough, for example 1234.') }}
+    <div class="flex flex-wrap gap-3">
+      <button type="submit" class="btn-primary">Search</button>
+      {% if q %}<a href="{{ url_for('history.list_history') }}" class="btn-secondary">Clear</a>{% endif %}
+    </div>
+  </form>
+
+  {% if rows %}
+  <p class="text-sm text-ink-600">{{ rows|length }} completed {{ 'parking' if rows|length == 1 else 'parkings' }}{% if q %} matching “{{ q }}”{% endif %}.</p>
+  {% call ui.data_table(['Plate number', 'Owner', 'Slot', 'Entered', 'Exited', 'Duration', 'Fee']) %}
+    {% for r in rows %}
+    <tr>
+      <td class="{{ plate_class }}">{{ r.plate_number }}</td>
+      <td class="{{ cell_class }}">{{ r.owner_name }}</td>
+      <td class="{{ nowrap_class }}">{{ r.slot_number }}</td>
+      <td class="{{ nowrap_class }}">{{ r.entry_time[:16] }}</td>
+      <td class="{{ nowrap_class }}">{{ r.exit_time[:16] }}</td>
+      <td class="{{ nowrap_class }}">{{ r.seconds|duration }}</td>
+      <td class="{{ nowrap_class }} font-medium">{{ r.total_fee|peso }}</td>
+    </tr>
+    {% endfor %}
+  {% endcall %}
+  {% elif not error %}
+  <p class="card text-ink-600">
+    {% if q %}No completed parking matches “{{ q }}”. <a href="{{ url_for('history.list_history') }}" class="{{ link_class }}">Show all</a>.
+    {% else %}No completed parkings yet. A parking appears here after its vehicle exits.{% endif %}
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
