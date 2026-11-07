@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">{{ title }}</h1>
+
+<section class="card grid gap-4 max-w-xl" aria-labelledby="error-code">
+  <p id="error-code" class="text-sm font-medium text-ink-600">Error {{ code }}</p>
+  <p>{{ message }}</p>
+  <div>
+    <a href="{{ url_for('index') }}" class="btn-primary">Back to dashboard</a>
+  </div>
+</section>
+{% endblock %}
