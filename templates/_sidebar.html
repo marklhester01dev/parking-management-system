@@ -1,0 +1,55 @@
+{% import '_macros.html' as ui %}
+{# Always open from 992px; under 992px it is a drawer opened and closed by static/js/sidebar.js. #}
+{% set nav_groups = [
+  ('Operations', [('index', 'Dashboard', 'dashboard'), ('parking.index', 'Parking', 'parking')]),
+  ('Records', [('vehicles.list_vehicles', 'Vehicles', 'vehicles'), ('slots.list_slots', 'Slots', 'slots'), ('history.list_history', 'History', 'history')]),
+] %}
+{% set backdrop_class = "fixed inset-0 z-30 bg-ink-900/40 lg:hidden invisible opacity-0 transition-[opacity,visibility] duration-200 motion-reduce:transition-none data-[open=true]:visible data-[open=true]:opacity-100" %}
+{% set aside_class = "fixed inset-y-0 left-0 z-40 w-80 max-w-full -translate-x-full p-4 transition-[translate,visibility] duration-200 motion-reduce:transition-none max-lg:invisible max-lg:data-[open=true]:visible data-[open=true]:translate-x-0 lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:shrink-0 lg:translate-x-0" %}
+{% set panel_class = "relative flex h-full flex-col rounded-card border border-line bg-surface shadow-xs" %}
+{% set header_class = "flex items-center gap-3 border-b border-line p-3" %}
+{% set brand_class = "flex min-w-0 flex-1 items-center gap-3 rounded-field focus-visible:outline-2 focus-visible:outline-brand-focus" %}
+{% set brand_icon_class = "grid size-12 shrink-0 place-items-center rounded-field bg-brand-600 text-white" %}
+{% set brand_text_class = "grid min-w-0" %}
+{% set icon_button_class = "inline-flex size-12 shrink-0 items-center justify-center rounded-field text-ink-600 hover:bg-canvas hover:text-ink-900 focus-visible:outline-2 focus-visible:outline-brand-focus" %}
+{% set nav_class = "relative flex-1 overflow-x-hidden overflow-y-auto p-3" %}
+{% set caption_class = "px-4 pb-2 text-sm text-ink-600" %}
+{% set link_class = "flex items-center gap-3 rounded-field px-4 py-3 text-fluid-base font-medium text-ink-600 hover:text-ink-900 aria-[current=page]:bg-brand-50 aria-[current=page]:text-brand-700 [&:not([aria-current=page])]:hover:bg-canvas focus-visible:outline-2 focus-visible:outline-brand-focus" %}
+
+<div data-nav-backdrop class="{{ backdrop_class }}" aria-hidden="true"></div>
+<aside id="sidebar" class="{{ aside_class }}">
+  <div class="{{ panel_class }}">
+    <div class="{{ header_class }}">
+      <a href="{{ url_for('index') }}" class="{{ brand_class }}">
+        <span class="{{ brand_icon_class }}">{{ ui.icon('brand') }}</span>
+        <span class="{{ brand_text_class }}">
+          <span class="truncate font-heading text-fluid-base font-semibold leading-tight">Parking Management</span>
+          <span class="truncate text-sm text-ink-600">Group 8 · IT E04</span>
+        </span>
+      </a>
+      <button type="button" class="{{ icon_button_class }} lg:hidden" data-nav-close aria-controls="sidebar" aria-label="Close menu">
+        {{ ui.icon('close') }}
+      </button>
+    </div>
+
+    <nav aria-label="Main" class="{{ nav_class }}">
+      <div class="grid gap-6">
+        {% for group_label, items in nav_groups %}
+        <div>
+          <p class="{{ caption_class }}">{{ group_label }}</p>
+          <ul class="grid gap-1">
+            {% for endpoint, label, icon_name in items %}
+            <li>
+              <a href="{{ url_for(endpoint) }}" class="{{ link_class }}"{% if request.endpoint == endpoint or (request.blueprint and endpoint.startswith(request.blueprint ~ '.')) %} aria-current="page"{% endif %}>
+                {{ ui.icon(icon_name) }}
+                <span>{{ label }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+    </nav>
+  </div>
+</aside>

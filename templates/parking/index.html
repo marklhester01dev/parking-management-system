@@ -14,7 +14,7 @@
     </p>
     {% else %}
     <form method="post" action="{{ url_for('parking.enter') }}" class="grid gap-4" novalidate>
-      <div class="grid items-start gap-4 md:grid-cols-2">
+      <div class="grid items-start gap-4 @xl:grid-cols-2">
         {{ ui.select_field('vehicle_id', 'Vehicle', vehicle_options, values.vehicle_id, error=errors.vehicle_id, placeholder='Choose a vehicle') }}
         {{ ui.select_field('slot_id', 'Available slot', slot_options, values.slot_id, error=errors.slot_id, placeholder='Choose a slot') }}
       </div>

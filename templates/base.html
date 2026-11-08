@@ -1,36 +1,41 @@
 {% import '_macros.html' as ui %}
-{% set nav_items = [('index', 'Dashboard'), ('parking.index', 'Parking'), ('vehicles.list_vehicles', 'Vehicles'), ('slots.list_slots', 'Slots'), ('history.list_history', 'History')] %}
-{% set nav_class = "rounded-field px-3 py-2 text-fluid-base font-medium text-ink-600 hover:text-ink-900 aria-[current=page]:bg-brand-50 aria-[current=page]:text-brand-700 [&:not([aria-current=page])]:hover:bg-canvas" %}
+{% set skip_class = "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 btn-primary" %}
+{% set topbar_class = "sticky top-0 z-20 border-b border-line bg-surface lg:hidden" %}
+{% set topbar_brand_class = "font-heading text-fluid-lg font-semibold" %}
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{% endblock %} · Parking Management</title>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/inter-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/barlow-semi-condensed-latin-600-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <script src="{{ url_for('static', filename='js/sidebar.js') }}" defer></script>
 </head>
-<body class="min-h-screen flex flex-col bg-canvas text-ink-900 text-fluid-base antialiased">
-  <header class="bg-surface border-b border-line">
-    <div class="page flex flex-wrap items-center justify-between gap-3 py-3">
-      <a href="{{ url_for('index') }}" class="text-fluid-lg font-semibold">Parking Management</a>
-      <nav aria-label="Main">
-        <ul class="flex flex-wrap gap-2">
-          {% for endpoint, label in nav_items %}
-          <li><a href="{{ url_for(endpoint) }}" class="{{ nav_class }}"{% if request.endpoint == endpoint or (request.blueprint and endpoint.startswith(request.blueprint ~ '.')) %} aria-current="page"{% endif %}>{{ label }}</a></li>
-          {% endfor %}
-        </ul>
-      </nav>
+<body class="min-h-screen bg-canvas text-ink-900 text-fluid-base antialiased">
+  <a href="#main" class="{{ skip_class }}">Skip to content</a>
+  <div class="flex min-h-screen">
+    {% include "_sidebar.html" %}
+
+    <div id="page" class="flex min-w-0 flex-1 flex-col">
+      <header class="{{ topbar_class }}">
+        <div class="page flex items-center gap-3 py-3">
+          <button type="button" class="btn-secondary" data-nav-open aria-controls="sidebar" aria-expanded="false" aria-label="Open menu">{{ ui.icon('menu') }}</button>
+          <a href="{{ url_for('index') }}" class="{{ topbar_brand_class }}">Parking Management</a>
+        </div>
+      </header>
+
+      <main id="main" class="@container page flex-1 py-6 lg:py-8">
+        {{ ui.flash_messages() }}
+        {% block content %}{% endblock %}
+      </main>
+
+      <footer class="border-t border-line">
+        <div class="page py-4 text-sm text-ink-600">IT E04 · Group 8 · Vehicle Parking Management System</div>
+      </footer>
     </div>
-  </header>
-
-  <main class="page flex-1 py-6 lg:py-8">
-    {{ ui.flash_messages() }}
-    {% block content %}{% endblock %}
-  </main>
-
-  <footer class="border-t border-line">
-    <div class="page py-4 text-sm text-ink-600">IT E04 · Group 8 · Vehicle Parking Management System</div>
-  </footer>
+  </div>
   <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </body>
 </html>
