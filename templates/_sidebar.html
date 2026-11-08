@@ -6,19 +6,19 @@
 ] %}
 {% set backdrop_class = "fixed inset-0 z-30 bg-scrim/50 lg:hidden invisible opacity-0 transition-[opacity,visibility] duration-200 motion-reduce:transition-none data-[open=true]:visible data-[open=true]:opacity-100" %}
 {% set aside_class = "fixed inset-y-0 left-0 z-40 w-80 max-w-full -translate-x-full p-4 transition-[translate,visibility] duration-200 motion-reduce:transition-none max-lg:invisible max-lg:data-[open=true]:visible data-[open=true]:translate-x-0 lg:sticky lg:top-0 lg:z-auto lg:h-screen lg:shrink-0 lg:translate-x-0" %}
-{% set panel_class = "relative flex h-full flex-col rounded-card border border-line bg-surface shadow-xs" %}
-{% set header_class = "flex items-center gap-3 border-b border-line p-3" %}
-{% set brand_class = "flex min-w-0 flex-1 items-center gap-3 rounded-field focus-visible:outline-2 focus-visible:outline-brand-focus" %}
-{% set brand_icon_class = "grid size-12 shrink-0 place-items-center rounded-field bg-brand-600 text-white" %}
+{% set panel_class = "relative flex h-full flex-col rounded-card border border-side-line bg-side text-side-ink shadow-card" %}
+{% set header_class = "flex items-center gap-3 border-b border-side-line p-3" %}
+{% set brand_class = "flex min-w-0 flex-1 items-center gap-3 rounded-field focus-visible:outline-2 focus-visible:outline-side-accent" %}
+{% set brand_icon_class = "grid size-12 shrink-0 place-items-center rounded-field bg-side-accent text-side" %}
 {% set brand_text_class = "grid min-w-0" %}
-{% set icon_button_class = "inline-flex size-12 shrink-0 items-center justify-center rounded-field text-ink-600 hover:bg-canvas hover:text-ink-900 focus-visible:outline-2 focus-visible:outline-brand-focus" %}
+{% set icon_button_class = "inline-flex size-12 shrink-0 items-center justify-center rounded-field text-side-muted hover:bg-side-hover hover:text-side-ink focus-visible:outline-2 focus-visible:outline-side-accent" %}
 {% set nav_class = "relative flex-1 overflow-x-hidden overflow-y-auto p-3" %}
-{% set caption_class = "px-4 pb-2 text-sm text-ink-600" %}
-{% set footer_class = "border-t border-line p-3" %}
-{% set theme_button_class = "group/theme flex w-full items-center gap-3 rounded-field px-4 py-3 text-fluid-base font-medium text-ink-600 hover:bg-canvas hover:text-ink-900 focus-visible:outline-2 focus-visible:outline-brand-focus" %}
-{% set switch_class = "ml-auto flex h-6 w-10 shrink-0 items-center rounded-full bg-ink-600 p-1 transition-colors duration-200 motion-reduce:transition-none group-aria-checked/theme:bg-brand-600" %}
-{% set knob_class = "size-4 rounded-full bg-surface transition-[translate] duration-200 motion-reduce:transition-none group-aria-checked/theme:translate-x-4" %}
-{% set link_class = "flex items-center gap-3 rounded-field px-4 py-3 text-fluid-base font-medium text-ink-600 hover:text-ink-900 aria-[current=page]:bg-brand-50 aria-[current=page]:text-brand-ink [&:not([aria-current=page])]:hover:bg-canvas focus-visible:outline-2 focus-visible:outline-brand-focus" %}
+{% set caption_class = "px-4 pb-2 text-sm text-side-muted" %}
+{% set footer_class = "border-t border-side-line p-3" %}
+{% set theme_button_class = "group/theme flex w-full items-center gap-3 rounded-field px-4 py-3 text-fluid-base font-medium text-side-muted hover:bg-side-hover hover:text-side-ink focus-visible:outline-2 focus-visible:outline-side-accent" %}
+{% set switch_class = "ml-auto flex h-6 w-10 shrink-0 items-center rounded-full bg-side-muted p-1 transition-colors duration-200 motion-reduce:transition-none group-aria-checked/theme:bg-side-accent" %}
+{% set knob_class = "size-4 rounded-full bg-side transition-[translate] duration-200 motion-reduce:transition-none group-aria-checked/theme:translate-x-4" %}
+{% set link_class = "flex items-center gap-3 rounded-field border-l-4 border-transparent py-3 pr-4 pl-3 text-fluid-base font-medium text-side-muted hover:text-side-ink aria-[current=page]:border-side-accent aria-[current=page]:bg-side-active aria-[current=page]:text-side-accent [&:not([aria-current=page])]:hover:bg-side-hover focus-visible:outline-2 focus-visible:outline-side-accent" %}
 
 <div data-nav-backdrop class="{{ backdrop_class }}" aria-hidden="true"></div>
 <aside id="sidebar" class="{{ aside_class }}">
@@ -28,7 +28,7 @@
         <span class="{{ brand_icon_class }}">{{ ui.icon('brand') }}</span>
         <span class="{{ brand_text_class }}">
           <span class="truncate font-heading text-fluid-base font-semibold leading-tight">Parking Management</span>
-          <span class="truncate text-sm text-ink-600">Group 8 · IT E04</span>
+          <span class="truncate text-sm text-side-muted">Group 8 · IT E04</span>
         </span>
       </a>
       <button type="button" class="{{ icon_button_class }} lg:hidden" data-nav-close aria-controls="sidebar" aria-label="Close menu">

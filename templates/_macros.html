@@ -55,11 +55,11 @@
 
 {# Scrolls inside its own wrapper, never the page. Use: {% call ui.data_table(['A', 'B']) %}<tr>...</tr>{% endcall %} #}
 {% macro data_table(headers) %}
-{% set wrap_class = "relative overflow-x-auto rounded-card border border-line bg-surface" %}
+{% set wrap_class = "relative overflow-x-auto rounded-card border border-line bg-surface shadow-card" %}
 {% set th_class = "px-4 py-3 text-left text-sm font-medium text-ink-600 whitespace-nowrap" %}
 <div class="{{ wrap_class }}">
   <table class="w-full text-fluid-base">
-    <thead class="border-b border-line bg-canvas">
+    <thead class="border-b border-line bg-brand-50">
       <tr>{% for h in headers %}<th scope="col" class="{{ th_class }}">{{ h }}</th>{% endfor %}</tr>
     </thead>
     <tbody class="divide-y divide-line">{{ caller() }}</tbody>

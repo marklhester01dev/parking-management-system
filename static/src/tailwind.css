@@ -58,27 +58,62 @@
     "Barlow Semi Condensed", ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", sans-serif;
 
-  /* Colours */
-  --color-canvas: #f8fafc;
-  --color-surface: #ffffff;
-  --color-line: #e2e8f0;
-  --color-ink-900: #0f172a;
-  --color-ink-600: #475569;
-  --color-brand-50: #eff6ff;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-focus: #93c5fd;
-  --color-brand-ink: #1d4ed8; /* brand-coloured text: links, current nav item */
-  --color-scrim: #020617; /* backdrop behind the mobile drawer */
-  --color-success: #15803d;
-  --color-success-soft: #dcfce7;
-  --color-maintenance: #c28403;
-  --color-warning: #b45309;
-  --color-warning-soft: #fef3c7;
-  --color-danger: #b91c1c;
-  --color-danger-soft: #fee2e2;
-  --color-info: #1d4ed8;
-  --color-info-soft: #dbeafe;
+  /* Colours: OKLCH, so equal lightness steps look equally bright across hues.
+     A few seed values are written out; the rest are derived from them with relative
+     colour syntax (oklch(from <seed> l c h)), so changing a seed re-tunes the whole family.
+     Needs Chrome 119+, Safari 16.4+ or Firefox 128+. */
+
+  /* Neutrals (hue 255-262, slate) */
+  --color-canvas: oklch(
+    0.94 0.012 250
+  ); /* page, one step darker than the cards */
+  --color-surface: oklch(1 0 0);
+  --color-line: oklch(from var(--color-canvas) calc(l - 0.05) calc(c * 1.2) h);
+  --color-ink-900: oklch(0.21 0.035 262);
+  --color-ink-600: oklch(from var(--color-ink-900) 0.45 calc(c * 0.8) h);
+
+  /* Brand: cyan (hue 215) */
+  --color-brand-600: oklch(0.52 0.095 215); /* seed */
+  --color-brand-700: oklch(
+    from var(--color-brand-600) calc(l - 0.06) c h
+  ); /* hover */
+  --color-brand-50: oklch(
+    from var(--color-brand-600) 0.97 calc(c * 0.18) h
+  ); /* tints, table header */
+  --color-brand-ink: oklch(
+    from var(--color-brand-600) calc(l - 0.05) c h
+  ); /* links */
+  --color-brand-focus: oklch(from var(--color-brand-600) 0.78 calc(c * 1.2) h);
+  --color-on-brand: oklch(1 0 0);
+
+  /* Sidebar (dark panel, same in both themes) */
+  --color-side: oklch(0.21 0.035 262);
+  --color-side-line: oklch(from var(--color-side) calc(l + 0.1) c h);
+  --color-side-hover: oklch(from var(--color-side) calc(l + 0.05) c h);
+  --color-side-active: oklch(from var(--color-side) calc(l + 0.09) c h);
+  --color-side-ink: oklch(from var(--color-side) 0.93 calc(c * 0.4) h);
+  --color-side-muted: oklch(from var(--color-side) 0.74 calc(c * 0.7) h);
+  --color-side-accent: oklch(from var(--color-brand-600) 0.83 calc(c * 1.35) h);
+
+  /* Parking-bay lines behind the page title, and the drawer backdrop */
+  --color-bay: oklch(from var(--color-brand-600) l c h / 0.09);
+  --color-scrim: oklch(0.14 0.03 262);
+
+  /* Status: text sits at L 0.50-0.52, soft backgrounds at L 0.95 */
+  --color-success: oklch(0.52 0.13 150);
+  --color-success-soft: oklch(from var(--color-success) 0.95 calc(c * 0.3) h);
+  --color-warning: oklch(0.52 0.12 60);
+  --color-warning-soft: oklch(from var(--color-warning) 0.95 calc(c * 0.3) h);
+  --color-maintenance: oklch(0.66 0.14 85); /* yellow; large figures only */
+  --color-danger: oklch(0.5 0.17 27);
+  --color-danger-soft: oklch(from var(--color-danger) 0.95 calc(c * 0.3) h);
+  --color-info: oklch(0.5 0.17 255);
+  --color-info-soft: oklch(from var(--color-info) 0.95 calc(c * 0.3) h);
+
+  /* Elevation */
+  --shadow-card:
+    0 1px 2px oklch(from var(--color-ink-900) l c h / 0.06),
+    0 6px 16px -4px oklch(from var(--color-ink-900) l c h / 0.08);
 
   /* Radii (4px grid) */
   --radius-card: 16px;
@@ -113,23 +148,27 @@
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-canvas: #0b1120;
-  --color-surface: #131c31;
-  --color-line: #25314a;
-  --color-ink-900: #e2e8f0;
-  --color-ink-600: #94a3b8;
-  --color-brand-50: #172554;
-  --color-brand-ink: #93c5fd;
-  --color-brand-focus: #60a5fa;
-  --color-success: #4ade80;
-  --color-success-soft: #052e16;
-  --color-warning: #fbbf24;
-  --color-warning-soft: #451a03;
-  --color-maintenance: #facc15;
-  --color-danger: #f87171;
-  --color-danger-soft: #450a0a;
-  --color-info: #60a5fa;
-  --color-info-soft: #172554;
+  --color-canvas: oklch(0.17 0.03 262);
+  --color-surface: oklch(0.215 0.035 262);
+  --color-line: oklch(from var(--color-canvas) calc(l + 0.12) c h);
+  --color-ink-900: oklch(0.93 0.015 262);
+  --color-ink-600: oklch(from var(--color-ink-900) 0.72 calc(c * 1.2) h);
+  --color-brand-50: oklch(from var(--color-brand-600) 0.27 calc(c * 0.6) h);
+  --color-brand-ink: oklch(from var(--color-brand-600) 0.82 c h);
+  --color-brand-focus: oklch(from var(--color-brand-600) 0.72 c h);
+  --color-side: oklch(0.14 0.03 262);
+  --color-bay: oklch(from var(--color-side-accent) l c h / 0.07);
+  --color-success: oklch(0.8 0.17 150);
+  --color-success-soft: oklch(from var(--color-success) 0.24 calc(c * 0.35) h);
+  --color-warning: oklch(0.82 0.15 80);
+  --color-warning-soft: oklch(from var(--color-warning) 0.24 calc(c * 0.35) h);
+  --color-maintenance: oklch(0.87 0.17 95);
+  --color-danger: oklch(0.72 0.17 25);
+  --color-danger-soft: oklch(from var(--color-danger) 0.24 calc(c * 0.35) h);
+  --color-info: oklch(0.72 0.14 250);
+  --color-info-soft: oklch(from var(--color-info) 0.24 calc(c * 0.35) h);
+  --shadow-card:
+    0 1px 2px oklch(0 0 0 / 0.4), 0 6px 16px -4px oklch(0 0 0 / 0.45);
 }
 
 @layer base {
@@ -172,7 +211,7 @@
   border: 1px solid var(--color-line);
   border-radius: var(--radius-card);
   padding: --spacing(6);
-  box-shadow: 0 1px 2px rgb(15 23 42 / 0.05);
+  box-shadow: var(--shadow-card);
 }
 
 @utility btn-primary {
@@ -183,7 +222,7 @@
   padding-inline: --spacing(6);
   border-radius: var(--radius-field);
   background-color: var(--color-brand-600);
-  color: #fff;
+  color: var(--color-on-brand);
   font-size: var(--text-fluid-base);
   font-weight: 600;
   cursor: pointer;
@@ -237,5 +276,25 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+}
+
+/* Faint painted parking-bay lines behind the page title, fading out downward. */
+@utility bay-lines {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: -1;
+    height: 12rem;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-bay) 0 2px,
+      transparent 2px 5rem
+    );
+    mask-image: linear-gradient(to bottom, #000, transparent);
   }
 }
