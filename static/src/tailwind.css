@@ -68,6 +68,8 @@
   --color-brand-600: #2563eb;
   --color-brand-700: #1d4ed8;
   --color-brand-focus: #93c5fd;
+  --color-brand-ink: #1d4ed8; /* brand-coloured text: links, current nav item */
+  --color-scrim: #020617; /* backdrop behind the mobile drawer */
   --color-success: #15803d;
   --color-success-soft: #dcfce7;
   --color-maintenance: #c28403;
@@ -102,6 +104,32 @@
     32px
   );
   --text-fluid-stat: clamp(32px, calc(32px + 8 * (100vw - 320px) / 880), 40px);
+}
+
+/* Dark mode: the same token names with new values, so no template changes colour class.
+   static/js/theme.js sets data-theme="light" | "dark" on <html> (system setting by default). */
+:root {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-canvas: #0b1120;
+  --color-surface: #131c31;
+  --color-line: #25314a;
+  --color-ink-900: #e2e8f0;
+  --color-ink-600: #94a3b8;
+  --color-brand-50: #172554;
+  --color-brand-ink: #93c5fd;
+  --color-brand-focus: #60a5fa;
+  --color-success: #4ade80;
+  --color-success-soft: #052e16;
+  --color-warning: #fbbf24;
+  --color-warning-soft: #451a03;
+  --color-maintenance: #facc15;
+  --color-danger: #f87171;
+  --color-danger-soft: #450a0a;
+  --color-info: #60a5fa;
+  --color-info-soft: #172554;
 }
 
 @layer base {
