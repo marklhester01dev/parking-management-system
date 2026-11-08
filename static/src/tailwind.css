@@ -110,7 +110,14 @@
   --color-info: oklch(0.5 0.17 255);
   --color-info-soft: oklch(from var(--color-info) 0.95 calc(c * 0.3) h);
 
-  /* Elevation */
+  /* Elevation. float = the sidebar: layered drop shadow, a cyan glow from the accent colour,
+     and a 1px inner highlight along the top edge. */
+  --shadow-float:
+    0 2px 4px oklch(from var(--color-side) l c h / 0.18),
+    0 12px 28px -6px oklch(from var(--color-side) l c h / 0.4),
+    0 28px 56px -12px oklch(from var(--color-side) l c h / 0.35),
+    0 0 36px -4px oklch(from var(--color-side-accent) l c h / 0.28),
+    inset 0 1px 0 oklch(from var(--color-side-ink) l c h / 0.08);
   --shadow-card:
     0 1px 2px oklch(from var(--color-ink-900) l c h / 0.06),
     0 6px 16px -4px oklch(from var(--color-ink-900) l c h / 0.08);
@@ -169,6 +176,11 @@
   --color-info-soft: oklch(from var(--color-info) 0.24 calc(c * 0.35) h);
   --shadow-card:
     0 1px 2px oklch(0 0 0 / 0.4), 0 6px 16px -4px oklch(0 0 0 / 0.45);
+  --shadow-float:
+    0 2px 4px oklch(0 0 0 / 0.5), 0 14px 32px -6px oklch(0 0 0 / 0.65),
+    0 30px 60px -12px oklch(0 0 0 / 0.6),
+    0 0 40px -2px oklch(from var(--color-side-accent) l c h / 0.32),
+    inset 0 1px 0 oklch(from var(--color-side-ink) l c h / 0.1);
 }
 
 @layer base {
