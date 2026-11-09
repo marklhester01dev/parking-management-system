@@ -254,12 +254,12 @@ parking_management_system/
 
 **Group 8 · IT E04 · 3rd Year BSIT**
 
-| Members                |
-| ---------------------- |
-| Dela Cruz, Arjay G.    |
-| Dumay, Ayessa Mae V.   |
-| Pile, Mark Lhester B.  |
-| Valmadrid, Rain Janiel |
+| Members                   |
+| ------------------------- |
+| Dela Cruz, Arjay G.       |
+| Dumay, Ayessa May V.      |
+| Pile, Mark Lhester B.     |
+| Valmadrid, Rain Janiel C. |
 
 ---
 
