@@ -86,14 +86,14 @@
   --color-brand-focus: oklch(from var(--color-brand-600) 0.78 calc(c * 1.2) h);
   --color-on-brand: oklch(1 0 0);
 
-  /* Sidebar (dark panel, same in both themes) */
-  --color-side: oklch(0.21 0.035 262);
-  --color-side-line: oklch(from var(--color-side) calc(l + 0.1) c h);
-  --color-side-hover: oklch(from var(--color-side) calc(l + 0.05) c h);
-  --color-side-active: oklch(from var(--color-side) calc(l + 0.09) c h);
-  --color-side-ink: oklch(from var(--color-side) 0.93 calc(c * 0.4) h);
-  --color-side-muted: oklch(from var(--color-side) 0.74 calc(c * 0.7) h);
-  --color-side-accent: oklch(from var(--color-brand-600) 0.83 calc(c * 1.35) h);
+  /* Sidebar: a light panel in the light theme, a dark one in the dark theme (see the dark block) */
+  --color-side: var(--color-surface);
+  --color-side-line: var(--color-line);
+  --color-side-hover: oklch(from var(--color-canvas) calc(l + 0.03) c h);
+  --color-side-active: var(--color-brand-50);
+  --color-side-ink: var(--color-ink-900);
+  --color-side-muted: var(--color-ink-600);
+  --color-side-accent: var(--color-brand-600);
 
   /* Parking-bay lines behind the page title, and the drawer backdrop */
   --color-bay: oklch(from var(--color-brand-600) l c h / 0.09);
@@ -113,11 +113,11 @@
   /* Elevation. float = the sidebar: layered drop shadow, a cyan glow from the accent colour,
      and a 1px inner highlight along the top edge. */
   --shadow-float:
-    0 2px 4px oklch(from var(--color-side) l c h / 0.18),
-    0 12px 28px -6px oklch(from var(--color-side) l c h / 0.4),
-    0 28px 56px -12px oklch(from var(--color-side) l c h / 0.35),
-    0 0 36px -4px oklch(from var(--color-side-accent) l c h / 0.28),
-    inset 0 1px 0 oklch(from var(--color-side-ink) l c h / 0.08);
+    0 2px 4px oklch(from var(--color-ink-900) l c h / 0.08),
+    0 12px 28px -6px oklch(from var(--color-ink-900) l c h / 0.18),
+    0 28px 56px -12px oklch(from var(--color-ink-900) l c h / 0.16),
+    0 0 36px -4px oklch(from var(--color-side-accent) l c h / 0.3),
+    inset 0 1px 0 oklch(1 0 0 / 0.7);
   --shadow-card:
     0 1px 2px oklch(from var(--color-ink-900) l c h / 0.06),
     0 6px 16px -4px oklch(from var(--color-ink-900) l c h / 0.08);
@@ -164,6 +164,12 @@
   --color-brand-ink: oklch(from var(--color-brand-600) 0.82 c h);
   --color-brand-focus: oklch(from var(--color-brand-600) 0.72 c h);
   --color-side: oklch(0.14 0.03 262);
+  --color-side-line: oklch(from var(--color-side) calc(l + 0.1) c h);
+  --color-side-hover: oklch(from var(--color-side) calc(l + 0.05) c h);
+  --color-side-active: oklch(from var(--color-side) calc(l + 0.09) c h);
+  --color-side-ink: oklch(from var(--color-side) 0.93 calc(c * 0.4) h);
+  --color-side-muted: oklch(from var(--color-side) 0.74 calc(c * 0.7) h);
+  --color-side-accent: oklch(from var(--color-brand-600) 0.83 calc(c * 1.35) h);
   --color-bay: oklch(from var(--color-side-accent) l c h / 0.07);
   --color-success: oklch(0.8 0.17 150);
   --color-success-soft: oklch(from var(--color-success) 0.24 calc(c * 0.35) h);

@@ -16,7 +16,10 @@
 {% set nav_class = "relative flex-1 overflow-x-hidden overflow-y-auto p-3" %}
 {% set caption_class = "px-4 pb-2 text-sm text-side-muted" %}
 {% set footer_class = "border-t border-side-line p-3" %}
-{% set theme_button_class = "flex w-full items-center gap-3 rounded-field px-4 py-3 text-fluid-base font-medium text-side-muted hover:bg-side-hover hover:text-side-ink focus-visible:outline-2 focus-visible:outline-side-accent" %}
+{% set theme_button_class = "flex w-full items-center gap-3 rounded-field px-4 py-2 text-fluid-base font-medium text-side-muted hover:bg-side-hover hover:text-side-ink focus-visible:outline-2 focus-visible:outline-side-accent" %}
+{% set mode_light_class = "flex items-center gap-3 group-data-[theme=dark]/root:hidden" %}
+{% set mode_dark_class = "hidden items-center gap-3 group-data-[theme=dark]/root:flex" %}
+{% set mode_hint_class = "text-sm font-normal" %}
 {% set switch_class = "ml-auto flex h-6 w-10 shrink-0 items-center rounded-full bg-side-muted p-1 transition-colors duration-200 motion-reduce:transition-none group-data-[theme=dark]/root:bg-side-accent" %}
 {% set knob_class = "size-4 rounded-full bg-side transition-[translate] duration-200 motion-reduce:transition-none group-data-[theme=dark]/root:translate-x-4" %}
 {% set link_class = "flex items-center gap-3 rounded-field border-l-4 border-transparent py-3 pr-4 pl-3 text-fluid-base font-medium text-side-muted hover:text-side-ink aria-[current=page]:border-side-accent aria-[current=page]:bg-side-active aria-[current=page]:text-side-accent [&:not([aria-current=page])]:hover:bg-side-hover focus-visible:outline-2 focus-visible:outline-side-accent" %}
@@ -58,9 +61,15 @@
     </nav>
 
     <div class="{{ footer_class }}">
-      <button type="button" role="switch" aria-checked="false" class="{{ theme_button_class }}" data-theme-toggle>
-        {{ ui.icon('moon') }}
-        <span>Dark mode</span>
+      <button type="button" class="{{ theme_button_class }}" data-theme-toggle>
+        <span class="{{ mode_light_class }}">
+          {{ ui.icon('sun') }}
+          <span class="grid text-left"><span>Light mode</span><span class="{{ mode_hint_class }}">Switch to dark</span></span>
+        </span>
+        <span class="{{ mode_dark_class }}">
+          {{ ui.icon('moon') }}
+          <span class="grid text-left"><span>Dark mode</span><span class="{{ mode_hint_class }}">Switch to light</span></span>
+        </span>
         <span class="{{ switch_class }}" aria-hidden="true"><span class="{{ knob_class }}"></span></span>
       </button>
     </div>

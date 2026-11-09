@@ -23,11 +23,11 @@
   };
   const preferred = () => saved() || (system.matches ? "dark" : "light");
 
-  function apply(theme) {
+  // The sidebar button draws its label, icon and switch from <html data-theme>, so nothing
+  // else has to be updated here.
+  const apply = (theme) => {
     root.dataset.theme = theme;
-    const toggle = document.querySelector("[data-theme-toggle]");
-    if (toggle) toggle.setAttribute("aria-checked", String(theme === "dark"));
-  }
+  };
 
   apply(preferred());
   system.addEventListener("change", () => {
@@ -37,7 +37,6 @@
   document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.querySelector("[data-theme-toggle]");
     if (!toggle) return;
-    apply(root.dataset.theme);
     toggle.addEventListener("click", () => {
       const next = root.dataset.theme === "dark" ? "light" : "dark";
       save(next);
