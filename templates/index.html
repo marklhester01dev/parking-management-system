@@ -1,29 +1,19 @@
 {% extends "base.html" %}
-{% set link_class = "font-medium text-brand-ink hover:underline" %}
-{% block title %}Parking{% endblock %}
+{% set label_class = "text-ink-600" %}
+{% set stat_class = "text-fluid-stat font-semibold" %}
+{% block title %}Dashboard{% endblock %}
 {% block content %}
-<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">Parking</h1>
+<h1 class="text-fluid-title font-semibold mb-6 lg:mb-8">Dashboard</h1>
 
 <div class="grid gap-8 lg:gap-12">
-  <section class="card grid gap-4" aria-labelledby="entry-heading">
-    <h2 id="entry-heading" class="text-fluid-lg font-semibold">Vehicle entry</h2>
-    {% if not vehicle_options or not slot_options %}
-    <p class="text-ink-600">
-      {% if not vehicle_options %}No vehicle is free to park. <a href="{{ url_for('vehicles.create_vehicle') }}" class="{{ link_class }}">Register a vehicle</a>, or wait for one to exit.{% endif %}
-      {% if not slot_options %}No slot is available. <a href="{{ url_for('slots.list_slots') }}" class="{{ link_class }}">Manage slots</a>, or wait for one to be released.{% endif %}
-    </p>
-    {% else %}
-    <form method="post" action="{{ url_for('parking.enter') }}" class="grid gap-4" novalidate>
-      <div class="grid items-start gap-4 @xl:grid-cols-2">
-        {{ ui.select_field('vehicle_id', 'Vehicle', vehicle_options, values.vehicle_id, error=errors.vehicle_id, placeholder='Choose a vehicle') }}
-        {{ ui.select_field('slot_id', 'Available slot', slot_options, values.slot_id, error=errors.slot_id, placeholder='Choose a slot') }}
-      </div>
-      <p class="text-sm text-ink-600">Entry time is recorded automatically. Rate: {{ rate_text }}</p>
-      <div>
-        <button type="submit" class="btn-primary">Record entry</button>
-      </div>
-    </form>
-    {% endif %}
+  <section class="grid gap-4" aria-labelledby="slots-heading">
+    <h2 id="slots-heading" class="text-fluid-lg font-semibold">Slots</h2>
+    <dl class="grid gap-4 @md:grid-cols-2 @4xl:grid-cols-4">
+      <div class="card grid gap-1"><dt class="{{ label_class }}">Total slots</dt><dd class="{{ stat_class }}">{{ counts.total }}</dd></div>
+      <div class="card grid gap-1"><dt class="{{ label_class }}">Available</dt><dd class="{{ stat_class }} text-success">{{ counts.available }}</dd></div>
+      <div class="card grid gap-1"><dt class="{{ label_class }}">Occupied</dt><dd class="{{ stat_class }} text-danger">{{ counts.occupied }}</dd></div>
+      <div class="card grid gap-1"><dt class="{{ label_class }}">In maintenance</dt><dd class="{{ stat_class }} text-maintenance">{{ counts.maintenance }}</dd></div>
+    </dl>
   </section>
 
   <section class="grid gap-4" aria-labelledby="active-heading">
