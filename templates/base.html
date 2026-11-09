@@ -1,6 +1,7 @@
 {% import '_macros.html' as ui %}
 {% set skip_class = "sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 btn-primary" %}
 {% set topbar_class = "sticky top-0 z-20 border-b border-line bg-surface lg:hidden" %}
+{% set dialog_icon_class = "grid size-12 shrink-0 place-items-center rounded-full bg-danger-soft text-danger" %}
 {% set topbar_brand_class = "font-heading text-fluid-lg font-semibold" %}
 <!doctype html>
 <html lang="en" class="group/root">
@@ -28,7 +29,6 @@
       </header>
 
       <main id="main" class="@container bay-lines page flex-1 py-6 lg:py-8">
-        {{ ui.flash_messages() }}
         {% block content %}{% endblock %}
       </main>
 
@@ -37,6 +37,26 @@
       </footer>
     </div>
   </div>
+
+  {# Overlays: toasts and the confirm dialog sit outside the page layout so nothing clips or covers them. #}
+  {{ ui.flash_messages() }}
+  <dialog id="confirm-dialog" class="modal" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+    <form method="dialog" class="grid gap-6">
+      <div class="flex items-start gap-4">
+        <span class="{{ dialog_icon_class }}">{{ ui.icon('warning', 'size-6 shrink-0') }}</span>
+        <div class="grid min-w-0 gap-1">
+          <h2 id="confirm-title" class="font-heading text-fluid-xl font-semibold" data-confirm-title>Please confirm</h2>
+          <p id="confirm-message" class="text-ink-600" data-confirm-message></p>
+        </div>
+      </div>
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <button type="submit" value="cancel" class="btn-secondary" data-confirm-cancel>Cancel</button>
+        <button type="submit" value="confirm" class="btn-danger-solid" data-confirm-accept>Confirm</button>
+      </div>
+    </form>
+  </dialog>
   <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/toast.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='js/dropdown.js') }}" defer></script>
 </body>
 </html>

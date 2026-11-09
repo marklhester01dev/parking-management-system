@@ -22,7 +22,7 @@
     <td class="{{ cell_class }}">
       <div class="flex flex-wrap gap-2">
         <a href="{{ url_for('vehicles.edit_vehicle', vehicle_id=v.vehicle_id) }}" class="btn-secondary">Edit<span class="sr-only"> {{ v.plate_number }}</span></a>
-        <form method="post" action="{{ url_for('vehicles.delete_vehicle', vehicle_id=v.vehicle_id) }}" data-confirm="Delete vehicle {{ v.plate_number }}? This cannot be undone.">
+        <form method="post" action="{{ url_for('vehicles.delete_vehicle', vehicle_id=v.vehicle_id) }}" data-confirm-title="Delete vehicle?" data-confirm-action="Delete" data-confirm="Delete vehicle {{ v.plate_number }}? This cannot be undone.">
           <button type="submit" class="btn-danger"{% if v.history_count %} disabled title="Has parking records"{% endif %}>Delete<span class="sr-only"> {{ v.plate_number }}</span></button>
         </form>
       </div>

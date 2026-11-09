@@ -85,6 +85,7 @@
   ); /* links */
   --color-brand-focus: oklch(from var(--color-brand-600) 0.78 calc(c * 1.2) h);
   --color-on-brand: oklch(1 0 0);
+  --color-on-danger: oklch(1 0 0);
 
   /* Sidebar: a light panel in the light theme, a dark one in the dark theme (see the dark block) */
   --color-side: var(--color-surface);
@@ -121,6 +122,11 @@
   --shadow-card:
     0 1px 2px oklch(from var(--color-ink-900) l c h / 0.06),
     0 6px 16px -4px oklch(from var(--color-ink-900) l c h / 0.08);
+  /* pop = what floats above the page: dropdown menus, toast notifications, modal dialogs */
+  --shadow-pop:
+    0 1px 2px oklch(from var(--color-ink-900) l c h / 0.06),
+    0 8px 24px -4px oklch(from var(--color-ink-900) l c h / 0.16),
+    0 20px 40px -8px oklch(from var(--color-ink-900) l c h / 0.14);
 
   /* Radii (4px grid) */
   --radius-card: 16px;
@@ -171,6 +177,7 @@
   --color-side-muted: oklch(from var(--color-side) 0.74 calc(c * 0.7) h);
   --color-side-accent: oklch(from var(--color-brand-600) 0.83 calc(c * 1.35) h);
   --color-bay: oklch(from var(--color-side-accent) l c h / 0.07);
+  --color-on-danger: oklch(0.2 0.03 25);
   --color-success: oklch(0.8 0.17 150);
   --color-success-soft: oklch(from var(--color-success) 0.24 calc(c * 0.35) h);
   --color-warning: oklch(0.82 0.15 80);
@@ -182,6 +189,9 @@
   --color-info-soft: oklch(from var(--color-info) 0.24 calc(c * 0.35) h);
   --shadow-card:
     0 1px 2px oklch(0 0 0 / 0.4), 0 6px 16px -4px oklch(0 0 0 / 0.45);
+  --shadow-pop:
+    0 1px 2px oklch(0 0 0 / 0.5), 0 8px 24px -4px oklch(0 0 0 / 0.6),
+    0 20px 40px -8px oklch(0 0 0 / 0.55);
   --shadow-float:
     0 2px 4px oklch(0 0 0 / 0.5), 0 14px 32px -6px oklch(0 0 0 / 0.65),
     0 30px 60px -12px oklch(0 0 0 / 0.6),
@@ -314,5 +324,83 @@
       transparent 2px 5rem
     );
     mask-image: linear-gradient(to bottom, #000, transparent);
+  }
+}
+
+/* Solid destructive button: the confirm button of the delete dialog. */
+@utility btn-danger-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: --spacing(2);
+  padding-inline: --spacing(4);
+  border-radius: var(--radius-field);
+  background-color: var(--color-danger);
+  color: var(--color-on-danger);
+  font-size: var(--text-fluid-base);
+  font-weight: 600;
+  cursor: pointer;
+  &:not(:disabled):hover {
+    background-color: oklch(from var(--color-danger) calc(l - 0.06) c h);
+  }
+}
+
+/* Modal dialog (<dialog> opened with showModal): centred, 16px gutter on phones, fades and
+   rises in. The dim, blurred backdrop is its ::backdrop. */
+@utility modal {
+  margin: auto;
+  width: min(28rem, calc(100% - --spacing(8)));
+  padding: --spacing(6);
+  background-color: var(--color-surface);
+  color: var(--color-ink-900);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-pop);
+  opacity: 0;
+  translate: 0 --spacing(2);
+  transition:
+    opacity 150ms ease-out,
+    translate 150ms ease-out,
+    overlay 150ms allow-discrete,
+    display 150ms allow-discrete;
+  &[open] {
+    opacity: 1;
+    translate: 0 0;
+  }
+  @starting-style {
+    &[open] {
+      opacity: 0;
+      translate: 0 --spacing(2);
+    }
+  }
+  &::backdrop {
+    background-color: oklch(from var(--color-scrim) l c h / 0.5);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition:
+      opacity 150ms ease-out,
+      overlay 150ms allow-discrete,
+      display 150ms allow-discrete;
+  }
+  &[open]::backdrop {
+    opacity: 1;
+  }
+  @starting-style {
+    &[open]::backdrop {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &::backdrop {
+      transition: none;
+    }
+  }
+}
+
+/* Page does not scroll behind an open dialog. */
+@layer base {
+  body:has(dialog[open]) {
+    overflow: hidden;
   }
 }
