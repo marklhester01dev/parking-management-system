@@ -3,6 +3,45 @@
 /* Every template or JS file that carries utility classes must be listed here. */
 @source "../../templates";
 
+/* Fonts are self-hosted (static/fonts, SIL OFL). Heading: Barlow Semi Condensed, drawn after
+   road and parking signage. Body: Inter, built for tables and numbers. latin-ext carries the
+   peso sign. */
+@font-face {
+  font-family: "Barlow Semi Condensed";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/barlow-semi-condensed-latin-600-normal.woff2")
+    format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/inter-latin-ext-wght-normal.woff2")
+    format("woff2-variations");
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @theme {
   /* Breakpoints (match the responsive checks in docs/general-rules.md) */
   --breakpoint-sm: 576px;
@@ -11,25 +50,77 @@
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1400px;
 
-  /* Colours */
-  --color-canvas: #f8fafc;
-  --color-surface: #ffffff;
-  --color-line: #e2e8f0;
-  --color-ink-900: #0f172a;
-  --color-ink-600: #475569;
-  --color-brand-50: #eff6ff;
-  --color-brand-600: #2563eb;
-  --color-brand-700: #1d4ed8;
-  --color-brand-focus: #93c5fd;
-  --color-success: #15803d;
-  --color-success-soft: #dcfce7;
-  --color-maintenance: #ca8a04;
-  --color-warning: #b45309;
-  --color-warning-soft: #fef3c7;
-  --color-danger: #b91c1c;
-  --color-danger-soft: #fee2e2;
-  --color-info: #1d4ed8;
-  --color-info-soft: #dbeafe;
+  /* Fonts: one for headings, one for everything else */
+  --font-sans:
+    "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-heading:
+    "Barlow Semi Condensed", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+
+  /* Colours: OKLCH, so equal lightness steps look equally bright across hues.
+     A few seed values are written out; the rest are derived from them with relative
+     colour syntax (oklch(from <seed> l c h)), so changing a seed re-tunes the whole family.
+     Needs Chrome 119+, Safari 16.4+ or Firefox 128+. */
+
+  /* Neutrals (hue 255-262, slate) */
+  --color-canvas: oklch(
+    0.94 0.012 250
+  ); /* page, one step darker than the cards */
+  --color-surface: oklch(1 0 0);
+  --color-line: oklch(from var(--color-canvas) calc(l - 0.05) calc(c * 1.2) h);
+  --color-ink-900: oklch(0.21 0.035 262);
+  --color-ink-600: oklch(from var(--color-ink-900) 0.45 calc(c * 0.8) h);
+
+  /* Brand: cyan (hue 215) */
+  --color-brand-600: oklch(0.52 0.095 215); /* seed */
+  --color-brand-700: oklch(
+    from var(--color-brand-600) calc(l - 0.06) c h
+  ); /* hover */
+  --color-brand-50: oklch(
+    from var(--color-brand-600) 0.97 calc(c * 0.18) h
+  ); /* tints, table header */
+  --color-brand-ink: oklch(
+    from var(--color-brand-600) calc(l - 0.05) c h
+  ); /* links */
+  --color-brand-focus: oklch(from var(--color-brand-600) 0.78 calc(c * 1.2) h);
+  --color-on-brand: oklch(1 0 0);
+
+  /* Sidebar: a light panel in the light theme, a dark one in the dark theme (see the dark block) */
+  --color-side: var(--color-surface);
+  --color-side-line: var(--color-line);
+  --color-side-hover: oklch(from var(--color-canvas) calc(l + 0.03) c h);
+  --color-side-active: var(--color-brand-50);
+  --color-side-ink: var(--color-ink-900);
+  --color-side-muted: var(--color-ink-600);
+  --color-side-accent: var(--color-brand-600);
+
+  /* Parking-bay lines behind the page title, and the drawer backdrop */
+  --color-bay: oklch(from var(--color-brand-600) l c h / 0.09);
+  --color-scrim: oklch(0.14 0.03 262);
+
+  /* Status: text sits at L 0.50-0.52, soft backgrounds at L 0.95 */
+  --color-success: oklch(0.52 0.13 150);
+  --color-success-soft: oklch(from var(--color-success) 0.95 calc(c * 0.3) h);
+  --color-warning: oklch(0.52 0.12 60);
+  --color-warning-soft: oklch(from var(--color-warning) 0.95 calc(c * 0.3) h);
+  --color-maintenance: oklch(0.66 0.14 85); /* yellow; large figures only */
+  --color-danger: oklch(0.5 0.17 27);
+  --color-danger-soft: oklch(from var(--color-danger) 0.95 calc(c * 0.3) h);
+  --color-info: oklch(0.5 0.17 255);
+  --color-info-soft: oklch(from var(--color-info) 0.95 calc(c * 0.3) h);
+
+  /* Elevation. float = the sidebar: layered drop shadow, a cyan glow from the accent colour,
+     and a 1px inner highlight along the top edge. */
+  --shadow-float:
+    0 2px 4px oklch(from var(--color-ink-900) l c h / 0.08),
+    0 12px 28px -6px oklch(from var(--color-ink-900) l c h / 0.18),
+    0 28px 56px -12px oklch(from var(--color-ink-900) l c h / 0.16),
+    0 0 36px -4px oklch(from var(--color-side-accent) l c h / 0.3),
+    inset 0 1px 0 oklch(1 0 0 / 0.7);
+  --shadow-card:
+    0 1px 2px oklch(from var(--color-ink-900) l c h / 0.06),
+    0 6px 16px -4px oklch(from var(--color-ink-900) l c h / 0.08);
 
   /* Radii (4px grid) */
   --radius-card: 16px;
@@ -55,6 +146,55 @@
     32px
   );
   --text-fluid-stat: clamp(32px, calc(32px + 8 * (100vw - 320px) / 880), 40px);
+}
+
+/* Dark mode: the same token names with new values, so no template changes colour class.
+   static/js/theme.js sets data-theme="light" | "dark" on <html> (system setting by default). */
+:root {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-canvas: oklch(0.17 0.03 262);
+  --color-surface: oklch(0.215 0.035 262);
+  --color-line: oklch(from var(--color-canvas) calc(l + 0.12) c h);
+  --color-ink-900: oklch(0.93 0.015 262);
+  --color-ink-600: oklch(from var(--color-ink-900) 0.72 calc(c * 1.2) h);
+  --color-brand-50: oklch(from var(--color-brand-600) 0.27 calc(c * 0.6) h);
+  --color-brand-ink: oklch(from var(--color-brand-600) 0.82 c h);
+  --color-brand-focus: oklch(from var(--color-brand-600) 0.72 c h);
+  --color-side: oklch(0.14 0.03 262);
+  --color-side-line: oklch(from var(--color-side) calc(l + 0.1) c h);
+  --color-side-hover: oklch(from var(--color-side) calc(l + 0.05) c h);
+  --color-side-active: oklch(from var(--color-side) calc(l + 0.09) c h);
+  --color-side-ink: oklch(from var(--color-side) 0.93 calc(c * 0.4) h);
+  --color-side-muted: oklch(from var(--color-side) 0.74 calc(c * 0.7) h);
+  --color-side-accent: oklch(from var(--color-brand-600) 0.83 calc(c * 1.35) h);
+  --color-bay: oklch(from var(--color-side-accent) l c h / 0.07);
+  --color-success: oklch(0.8 0.17 150);
+  --color-success-soft: oklch(from var(--color-success) 0.24 calc(c * 0.35) h);
+  --color-warning: oklch(0.82 0.15 80);
+  --color-warning-soft: oklch(from var(--color-warning) 0.24 calc(c * 0.35) h);
+  --color-maintenance: oklch(0.87 0.17 95);
+  --color-danger: oklch(0.72 0.17 25);
+  --color-danger-soft: oklch(from var(--color-danger) 0.24 calc(c * 0.35) h);
+  --color-info: oklch(0.72 0.14 250);
+  --color-info-soft: oklch(from var(--color-info) 0.24 calc(c * 0.35) h);
+  --shadow-card:
+    0 1px 2px oklch(0 0 0 / 0.4), 0 6px 16px -4px oklch(0 0 0 / 0.45);
+  --shadow-float:
+    0 2px 4px oklch(0 0 0 / 0.5), 0 14px 32px -6px oklch(0 0 0 / 0.65),
+    0 30px 60px -12px oklch(0 0 0 / 0.6),
+    0 0 40px -2px oklch(from var(--color-side-accent) l c h / 0.32),
+    inset 0 1px 0 oklch(from var(--color-side-ink) l c h / 0.1);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+  }
 }
 
 /* Page margin: 16px phones, 24px from 576px, 32px from 992px, 48px from 1400px */
@@ -89,7 +229,7 @@
   border: 1px solid var(--color-line);
   border-radius: var(--radius-card);
   padding: --spacing(6);
-  box-shadow: 0 1px 2px rgb(15 23 42 / 0.05);
+  box-shadow: var(--shadow-card);
 }
 
 @utility btn-primary {
@@ -100,7 +240,7 @@
   padding-inline: --spacing(6);
   border-radius: var(--radius-field);
   background-color: var(--color-brand-600);
-  color: #fff;
+  color: var(--color-on-brand);
   font-size: var(--text-fluid-base);
   font-weight: 600;
   cursor: pointer;
@@ -154,5 +294,25 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+}
+
+/* Faint painted parking-bay lines behind the page title, fading out downward. */
+@utility bay-lines {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    z-index: -1;
+    height: 12rem;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-bay) 0 2px,
+      transparent 2px 5rem
+    );
+    mask-image: linear-gradient(to bottom, #000, transparent);
   }
 }

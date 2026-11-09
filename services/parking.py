@@ -17,11 +17,16 @@ class Rejected(Exception):
         self.field = field
 
 
+_MAX_ID = 2**63 - 1   # SQLite INTEGER limit; larger values raise OverflowError
+
+
 def _int(value):
+    """A usable row id, or None for anything else (text, zero, negative, too large)."""
     try:
-        return int(value)
+        number = int(value)
     except (TypeError, ValueError):
         return None
+    return number if 0 < number <= _MAX_ID else None
 
 
 # ---- reads -----------------------------------------------------------------
@@ -144,6 +149,8 @@ def enter(db, vehicle_id, slot_id, now=None):
     except sqlite3.IntegrityError:
         return None, Rejected("The vehicle or slot is already in use. Nothing was saved; "
                               "refresh and try again.")
+    except sqlite3.OperationalError:
+        return None, Rejected("The database is busy. Nothing was saved; try again.")
 
 
 # ---- exit ------------------------------------------------------------------
@@ -184,3 +191,5 @@ def exit_vehicle(db, transaction_id, now=None):
         return None, exc
     except sqlite3.IntegrityError:
         return None, Rejected("The exit could not be saved. Nothing was changed; try again.")
+    except sqlite3.OperationalError:
+        return None, Rejected("The database is busy. Nothing was saved; try again.")
